@@ -33,6 +33,7 @@
     "core-js": "^3.9.1",
     "nuxt": "^2.15.3",
     "nuxt-helmet": "^2.0.0",
+    "nuxt-start": "^2.15.4",
     "nuxt-webfontloader": "^1.1.0",
     "rimraf": "^3.0.2"
   },
