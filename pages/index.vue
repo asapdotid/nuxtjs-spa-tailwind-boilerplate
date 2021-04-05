@@ -2,9 +2,7 @@
   <div class="container">
     <div>
       <Logo />
-      <h1 class="title">
-        <fa :icon="['fas', 'home']" /> nuxt-tw-spa
-      </h1>
+      <h1 class="title"><fa :icon="['fas', 'home']" /> nuxt-tw-spa</h1>
       <div class="links">
         <div>
           <h3>Mountaiins (Sample from NuxtJs Dev API)</h3>
@@ -22,7 +20,7 @@ export default {
   async asyncData({ $axios, $config }) {
     const mountains = await $axios.$get(`/mountains`)
     return { mountains }
-  }
+  },
 }
 </script>
 
@@ -33,6 +31,7 @@ export default {
 }
 */
 .container {
+  @apply bg-green-100 mt-3;
   margin: 0 auto;
   min-height: 100vh;
   display: flex;
@@ -42,16 +41,8 @@ export default {
 }
 
 .title {
-  font-family:
-    'Quicksand',
-    'Source Sans Pro',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    sans-serif;
+  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   display: block;
   font-weight: 300;
   font-size: 100px;

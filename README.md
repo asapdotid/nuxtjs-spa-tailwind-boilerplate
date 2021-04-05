@@ -69,11 +69,15 @@ How to use on Nuxt Config `(nuxt.config.js)`, like use dotenv module:
 ```bash
 ...
   server: {
-    port: process.env.SERVER_PORT,
-    host: process.env.SERVER_HOST,
+    host: `${process.env.SERVER_HOST}`, // default: localhost
+    port: process.env.SERVER_PORT, // default: 3000
     timing: false,
   },
-  
+
+  cli: {
+    badgeMessages: [`Application running on ${process.env.APP_MODE}`],
+  },
+
   publicRuntimeConfig: {
     appURL: `${process.env.APP_URL}`,
     axios: {
@@ -81,9 +85,15 @@ How to use on Nuxt Config `(nuxt.config.js)`, like use dotenv module:
       baseURL: `${process.env.API_URL}`,
     },
   },
+
+  privateRuntimeConfig: {},
 ```
 
 How to use on part of _**Nuxt/Vue files**_ with **Public Runtime Config** or **Private Runtime Config** in `nuxt.config.js`
+
+```bash
+$config.env_name
+```
 
 Sample in Pages/index.vue
 
@@ -106,130 +116,6 @@ export default {
 ```
 
 ---
-
-## Production Setup (Nuxt-Start + RimRaf + PM2)
-
-- Documentation for Nuxt-Start [here](https://www.npmjs.com/package/nuxt-start)
-- Documentation for RimRaf [here](https://www.npmjs.com/package/rimraf)
-- Documentation for PM2 [here](https://pm2.keymetrics.io/)
-
-Installation for Nuxt-Start:
-
-```
-using yarn:
-
-yarn add nuxt-start
-```
-
-Installation for RimRaf:
-
-```
-using yarn:
-
-yarn add rimraf
-```
-
-Installation for PM2 for Global installation:
-
-```
-using yarn:
-
-yarn add pm2 -g
-```
-
-PM2 ecosystem config `ecosystem.config.js`:
-
-```
-module.exports = {
-  apps: [
-    {
-      name: 'restaurant-staging-app',
-      exec_mode: 'cluster',
-      instances: 2,
-      script: 'nuxt-start',
-      args: '--dotenv .env.staging',
-      watch: true,
-      out_file: '/dev/null',
-      error_file: '/dev/null',
-      env: {
-        HOST: '0.0.0.0',
-        PORT: 3000,
-        NODE_ENV: 'production',
-      },
-    },
-    {
-      name: 'restaurant-production-app',
-      exec_mode: 'cluster',
-      instances: 2,
-      script: 'nuxt-start',
-      args: '--dotenv .env.production',
-      watch: true,
-      out_file: '/dev/null',
-      error_file: '/dev/null',
-      env: {
-        HOST: '0.0.0.0',
-        PORT: 3000,
-        NODE_ENV: 'production',
-      },
-    },
-  ],
-}
-```
-
-Finally modify `package.json` script:
-
-```
-...
-"scripts": {
-  "test": "jest",
-  "clean": "rimraf .nuxt && rimraf dist",
-  "dev": "nuxt --dotenv .env.development",
-  "build:dev": "yarn clean && nuxt build --dotenv .env.development",
-  "start:dev": "nuxt start --dotenv .env.development",
-  "generate:dev": "nuxt generate --dotenv .env.development",
-  "build:staging": "yarn clean && nuxt build --dotenv .env.staging",
-  "start:staging": "pm2 start ecosystem.config.js --only nuxt-staging-app && pm2 logs",
-  "reload:staging": "pm2 reload ecosystem.config.js --only nuxt-staging-app",
-  "stop:staging": "pm2 stop ecosystem.config.js --only nuxt-staging-app",
-  "delete:staging": "yarn stop:staging && pm2 delete ecosystem.config.js --only nuxt-staging-app",
-  "build:production": "yarn clean && nuxt build --dotenv .env.production",
-  "start:production": "pm2 start ecosystem.config.js --only nuxt-production-app && pm2 logs",
-  "reload:production": "pm2 reload ecosystem.config.js --only nuxt-production-app",
-  "stop:production": "pm2 stop ecosystem.config.js --only nuxt-production-app",
-  "delete:production": "yarn stop:production && pm2 delete ecosystem.config.js --only nuxt-production-app"
-},
-```
-
-## Build Setup
-
-```bash
-# install dependencies
-$ yarn install
-
-# serve with hot reload at development
-$ yarn dev
-
-# build for development and launch server LOCAL
-$ yarn build:dev
-$ yarn start:dev
-
-# build for staging and launch server use PM2
-$ yarn build:staging
-$ yarn start:staging
-$ yarn stop:staging
-$ yarn reload:staging
-$ yarn delete:staging
-
-# build for production and launch server use PM2
-$ yarn build:production
-$ yarn start:production
-$ yarn stop:production
-$ yarn reload:production
-$ yarn delete:production
-
-# generate static project
-$ yarn generate:dev
-```
 
 ## Integrate with Tailwind CSS version 2.x (Manual or Upgrade if install before):
 
@@ -531,6 +417,7 @@ Setup config in `nuxt.config.js`:
   },
 }
 ```
+
 or
 
 Use Nuxt Helmet [here](https://github.com/victor-perez/nuxt-helmet)
@@ -577,13 +464,13 @@ Setup config in `nuxt.config.js`:
   buildModules: [
     '@nuxtjs/fontawesome',
   ],
-  
+
   // Fontawesome module configuration
   fontawesome: {
     component: 'fa',
     icons: {
       solid: ['faHome', 'faHeart'],
-      
+
       // include all icons. But dont do this.
       // solid: true,
       // brands: true,
@@ -636,6 +523,130 @@ export default {
     optimizeImages: true
   }
 }
+```
+
+## Production Setup (Nuxt-Start + RimRaf + PM2)
+
+- Documentation for Nuxt-Start [here](https://www.npmjs.com/package/nuxt-start)
+- Documentation for RimRaf [here](https://www.npmjs.com/package/rimraf)
+- Documentation for PM2 [here](https://pm2.keymetrics.io/)
+
+Installation for Nuxt-Start:
+
+```
+using yarn:
+
+yarn add nuxt-start
+```
+
+Installation for RimRaf:
+
+```
+using yarn:
+
+yarn add rimraf
+```
+
+Installation for PM2 for Global installation:
+
+```
+using yarn:
+
+yarn add pm2 -g
+```
+
+PM2 ecosystem config `ecosystem.config.js`:
+
+```
+module.exports = {
+  apps: [
+    {
+      name: 'restaurant-staging-app',
+      exec_mode: 'cluster',
+      instances: 2,
+      script: 'nuxt-start',
+      args: '--dotenv .env.staging',
+      watch: true,
+      out_file: '/dev/null',
+      error_file: '/dev/null',
+      env: {
+        HOST: '0.0.0.0',
+        PORT: 3000,
+        NODE_ENV: 'production',
+      },
+    },
+    {
+      name: 'restaurant-production-app',
+      exec_mode: 'cluster',
+      instances: 2,
+      script: 'nuxt-start',
+      args: '--dotenv .env.production',
+      watch: true,
+      out_file: '/dev/null',
+      error_file: '/dev/null',
+      env: {
+        HOST: '0.0.0.0',
+        PORT: 3000,
+        NODE_ENV: 'production',
+      },
+    },
+  ],
+}
+```
+
+Finally modify `package.json` script:
+
+```
+...
+"scripts": {
+  "test": "jest",
+  "clean": "rimraf .nuxt && rimraf dist",
+  "dev": "nuxt --dotenv .env.development",
+  "build:dev": "yarn clean && nuxt build --dotenv .env.development",
+  "start:dev": "nuxt start --dotenv .env.development",
+  "generate:dev": "nuxt generate --dotenv .env.development",
+  "build:staging": "yarn clean && nuxt build --dotenv .env.staging",
+  "start:staging": "pm2 start ecosystem.config.js --only nuxt-staging-app && pm2 logs",
+  "reload:staging": "pm2 reload ecosystem.config.js --only nuxt-staging-app",
+  "stop:staging": "pm2 stop ecosystem.config.js --only nuxt-staging-app",
+  "delete:staging": "yarn stop:staging && pm2 delete ecosystem.config.js --only nuxt-staging-app",
+  "build:production": "yarn clean && nuxt build --dotenv .env.production",
+  "start:production": "pm2 start ecosystem.config.js --only nuxt-production-app && pm2 logs",
+  "reload:production": "pm2 reload ecosystem.config.js --only nuxt-production-app",
+  "stop:production": "pm2 stop ecosystem.config.js --only nuxt-production-app",
+  "delete:production": "yarn stop:production && pm2 delete ecosystem.config.js --only nuxt-production-app"
+},
+```
+
+## Build Setup
+
+```bash
+# install dependencies
+$ yarn install
+
+# serve with hot reload at development
+$ yarn dev
+
+# build for development and launch server LOCAL
+$ yarn build:dev
+$ yarn start:dev
+
+# build for staging and launch server use PM2
+$ yarn build:staging
+$ yarn start:staging
+$ yarn stop:staging
+$ yarn reload:staging
+$ yarn delete:staging
+
+# build for production and launch server use PM2
+$ yarn build:production
+$ yarn start:production
+$ yarn stop:production
+$ yarn reload:production
+$ yarn delete:production
+
+# generate static project
+$ yarn generate:dev
 ```
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
