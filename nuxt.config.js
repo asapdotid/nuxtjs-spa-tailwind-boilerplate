@@ -108,7 +108,6 @@ export default {
 
   // Tailwind configuration: https://tailwindcss.nuxtjs.org/setup/
   tailwindcss: {
-    jit: true,
     exposeConfig: false,
     viewer: false,
     config: {},
@@ -158,5 +157,12 @@ export default {
   pageTransition: {
     name: 'page',
     mode: 'out-in',
+  },
+
+  watchers: {
+    webpack: {
+      aggregateTimeout: 300,
+      poll: 1000,
+    },
   },
 }

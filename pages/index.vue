@@ -2,7 +2,9 @@
   <div class="container">
     <div>
       <Logo />
-      <h1 class="title"><fa :icon="['fas', 'home']" /> nuxt-tw-spa</h1>
+      <h1 class="title">
+        <fa :icon="['fas', 'home']" /> Nuxt SPA + Tailwind CSS Boilerplate
+      </h1>
       <div class="links">
         <div>
           <h3>Mountaiins (Sample from NuxtJs Dev API)</h3>
@@ -45,7 +47,7 @@ export default {
     'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   display: block;
   font-weight: 300;
-  font-size: 100px;
+  font-size: 60px;
   color: #35495e;
   letter-spacing: 1px;
 }
