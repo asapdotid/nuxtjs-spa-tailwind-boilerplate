@@ -4,8 +4,8 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'Landing',
-    titleTemplate: '%s - Asapdotid Site',
+    title: 'Boilerplate',
+    titleTemplate: '%s - Nuxt Js',
     htmlAttrs: {
       lang: 'en',
     },
@@ -15,7 +15,7 @@ export default {
       {
         hid: 'description',
         name: 'description',
-        content: 'NuxtJs + Tailwind CSS Boilerplate Setup',
+        content: 'NuxtJs SPA + Tailwind CSS Boilerplate Setup',
       },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
@@ -75,7 +75,10 @@ export default {
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  axios: {
+    https: `${process.env.NODE_ENV}` !== 'development',
+    baseURL: `${process.env.API_URL}`,
+  },
 
   // Web Font Loader module configuration
   webfontloader: {
@@ -131,10 +134,6 @@ export default {
   // https://nuxtjs.org/docs/2.x/configuration-glossary/configuration-runtime-config/
   publicRuntimeConfig: {
     appURL: `${process.env.APP_URL}`,
-    axios: {
-      https: `${process.env.NODE_ENV}` !== 'development',
-      baseURL: `${process.env.API_URL}`,
-    },
   },
 
   // https://nuxtjs.org/docs/2.x/configuration-glossary/configuration-runtime-config/
